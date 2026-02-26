@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOBODY STUDIOS | BUILT BY NOBODY</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,700&family=Inter:wght@400;900&family=Space+Mono&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-yellow: #facc15;
+            --brand-black: #0a0a0a;
+            /* Mockup specific tokens */
+            --off-black: #111111;
+            --card: #161616;
+            --border: #2a2a2a;
+            --border-bright: #3a3a3a;
+            --muted: #777770;
+            --font-display: 'Bebas Neue', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+            --font-serif: 'Cormorant Garamond', serif;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: var(--brand-black);
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .serif { font-family: 'Cormorant Garamond', serif; }
+        .mono { font-family: 'Space Mono', monospace; }
+        
+        .bg-grain {
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+            background-attachment: fixed;
+        }
+
+        .image-gritty {
+            filter: grayscale(100%) contrast(120%) brightness(80%);
+            transition: all 0.5s ease;
+        }
+        
+        .card:hover .image-gritty {
+            filter: grayscale(0%) contrast(110%) brightness(90%);
+            transform: scale(1.05);
+        }
+
+        .text-stroke {
+            -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+            color: transparent;
+        }
+
+        .btn-bold {
+            background: var(--brand-yellow);
+            color: black;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.05em;
+            transition: all 0.2s ease;
+        }
+        .btn-bold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(250, 204, 21, 0.3);
+        }
+        .btn-bold:active { transform: scale(0.95); }
+
+        .nav-blur {
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--brand-yellow); }
+
+        /* =========================================
+           CSS Device Mockup Frame Styles 
+           ========================================= */
+        .mockup-frame {
+            width: 320px;
+            max-width: 100%;
+            height: 650px;
+            border: 12px solid #1a1a1a;
+            border-radius: 40px;
+            background: var(--brand-black);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px #333;
+            transform: translateY(0);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            flex-shrink: 0;
+            text-align: left;
+        }
+
+        .mockup-frame:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 35px 60px -15px rgba(250, 204, 21, 0.1), 0 0 0 1px #444;
+        }
+
+        .mockup-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 24px;
+            background: #1a1a1a;
+            border-bottom-left-radius: 16px;
+            border-bottom-right-radius: 16px;
+            z-index: 50;
+        }
+
+        .ps-header { background: var(--off-black); border-bottom: 1px solid var(--border); padding: 32px 16px 16px; }
+        .ps-brand { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.25em; color: var(--brand-yellow); }
+        .ps-title { font-family: var(--font-display); font-size: 28px; letter-spacing: 0.04em; margin-top: 4px; line-height: 1; }
+        .ps-welcome { font-family: var(--font-mono); font-size: 14px; color: var(--muted); margin-top: 2px; }
+        .ps-welcome strong { color: #ffffff; }
+        
+        .ps-content { padding: 16px; display: flex; flex-direction: column; gap: 12px; font-family: var(--font-mono); }
+        
+        .ps-card-mock { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+        .ps-card-active { border-color: var(--brand-yellow); }
+        
+        .ps-btn { background: var(--brand-yellow); color: var(--brand-black); font-family: var(--font-display); font-size: 20px; padding: 14px; border-radius: 8px; text-align: center; width: 100%; letter-spacing: 0.08em; box-shadow: 0 6px 20px rgba(250,204,21,0.15); border: none; cursor: pointer;}
+        
+        .ps-quote { border-left: 3px solid var(--brand-yellow); background: var(--card); border-radius: 8px; padding: 16px; }
+        .ps-quote-text { font-family: var(--font-serif); font-style: italic; font-size: 16px; color: #ffffff; }
+        
+        .ps-row { display: flex; justify-content: space-between; align-items: center; background: var(--off-black); border: 1px solid var(--border); padding: 12px; border-radius: 6px; margin-bottom: 8px; }
+        .ps-row.chest { border-left: 3px solid rgba(239, 68, 68, 0.6); }
+        .ps-row.arms { border-left: 3px solid rgba(168, 85, 247, 0.6); }
+        
+        .ps-tabbar { position: absolute; bottom: 0; width: 100%; height: 60px; background: var(--off-black); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; padding-bottom: 8px; }
+        .ps-tab { width: 30px; height: 30px; border-radius: 50%; background: var(--border); }
+        .ps-tab.active { background: var(--brand-yellow); }
+
+        .mockup-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .mockup-text-xs { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+        .mockup-font-bold { font-weight: 700; color: #ffffff; font-size: 12px; }
+    </style>
+</head>
+<body class="bg-grain">
+
+    <!-- Refined Navigation -->
+    <nav class="fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center nav-blur">
+        <div class="text-2xl font-black tracking-tighter uppercase cursor-default">
+            _Nobody Studios<span class="text-yellow-400">.</span>
+        </div>
+        <div class="flex gap-6 font-bold text-[10px] md:text-xs uppercase tracking-[0.2em]">
+            <a href="#apps" class="hover:text-yellow-400 transition-colors">The Protocols</a>
+            <a href="#manifesto" class="hover:text-yellow-400 transition-colors">Manifesto</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-20">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1534367507873-d2d7e24c797f?q=80&w=2070&auto=format&fit=crop" 
+                 class="w-full h-full object-cover opacity-30 grayscale" alt="Gritty background">
+        </div>
+        
+        <div class="relative z-10 text-center px-4 mt-auto mb-auto">
+            <h1 class="text-7xl md:text-[12rem] font-black uppercase leading-[0.85] tracking-tighter mb-6">
+                TRUST<br><span class="text-stroke">NOBODY.</span>
+            </h1>
+            <p class="serif text-xl md:text-4xl italic text-yellow-400 max-w-3xl mx-auto mb-10">
+                "Biological tools built for the resilient."
+            </p>
+            <div class="flex justify-center">
+                <a href="#apps" class="btn-bold px-10 py-4 text-xl md:text-2xl inline-block">
+                    Explore the Void
+                </a>
+            </div>
+        </div>
+        
+        <!-- Subtle Scroll Indicator -->
+        <div class="relative z-10 mb-10 animate-bounce opacity-50">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+        </div>
+    </section>
+
+    <!-- App Section -->
+    <section id="apps" class="py-32 px-6 max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-6">
+            <div class="max-w-xl">
+                <span class="mono text-xs text-yellow-400 font-bold tracking-widest uppercase mb-4 block">Biological Maintenance</span>
+                <h2 class="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none">The Wellness Protocols</h2>
+            </div>
+            <p class="mono text-xs max-w-sm opacity-60 text-right">
+                [ PHASE_01: MAINTENANCE ] <br>
+                We don't do 'wellness.' We do survival. Stop decaying and start tracking.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <!-- Planet Strength -->
+            <div class="card group flex flex-col h-full">
+                <div class="relative overflow-hidden aspect-[3/4] mb-8 border border-white/10">
+                    <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2070&auto=format&fit=crop" 
+                         class="image-gritty w-full h-full object-cover" alt="Strength">
+                    <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all"></div>
+                    <div class="absolute top-4 right-4 z-10">
+                        <span class="mono text-[10px] bg-yellow-400 text-black px-2 py-1 font-bold tracking-widest uppercase shadow-lg">Now In Beta</span>
+                    </div>
+                    <div class="absolute bottom-6 left-6">
+                        <span class="mono text-[10px] bg-yellow-400 text-black px-2 py-1 font-bold">STRENGTH_MODULE</span>
+                    </div>
+                </div>
+                <div class="flex flex-col flex-grow">
+                    <h3 class="text-3xl font-black uppercase mb-2">Planet Strength</h3>
+                    <p class="serif italic text-xl text-yellow-400 mb-4">Gravity is the only judge.</p>
+                    <p class="text-sm opacity-50 mb-8 leading-relaxed">No participation trophies. Just logs of every pound you've moved since you decided to stop being weak. High-volume tracking for those who embrace the struggle.</p>
+                    
+                    <!-- Aligned CTA -->
+                    <div class="mt-auto">
+                        <a href="planet-strength.html" class="block w-full border-b-2 border-yellow-400 pb-2 font-black text-xs hover:text-yellow-400 transition-colors uppercase tracking-[0.2em] text-left">
+                            Planet Strength | Beta — 
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Steady -->
+            <div class="card group flex flex-col h-full">
+                <div class="relative overflow-hidden aspect-[3/4] mb-8 border border-white/10">
+                    <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=2040&auto=format&fit=crop" 
+                         class="image-gritty w-full h-full object-cover" alt="Nutrition">
+                    <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all"></div>
+                    <div class="absolute top-4 right-4 z-10">
+                        <span class="mono text-[10px] bg-black text-white border border-white/20 px-2 py-1 font-bold tracking-widest uppercase shadow-lg">Coming Soon</span>
+                    </div>
+                    <div class="absolute bottom-6 left-6">
+                        <span class="mono text-[10px] bg-yellow-400 text-black px-2 py-1 font-bold">FUEL_LEDGER</span>
+                    </div>
+                </div>
+                <div class="flex flex-col flex-grow">
+                    <h3 class="text-3xl font-black uppercase mb-2">Steady</h3>
+                    <p class="serif italic text-xl text-yellow-400 mb-4">Accounting for your engine.</p>
+                    <p class="text-sm opacity-50 mb-8 leading-relaxed">Calories, protein, water. The ledger of human existence. Simple, brutal math. If you didn't track it, it didn't happen. No fluff, just the numbers.</p>
+                    
+                    <!-- Aligned CTA -->
+                    <div class="mt-auto">
+                        <button class="w-full border-b-2 border-yellow-400 pb-2 font-black text-xs transition-colors uppercase tracking-[0.2em] text-left opacity-50 cursor-not-allowed">
+                            Access Ledger — 
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Signal -->
+            <div class="card group flex flex-col h-full">
+                <div class="relative overflow-hidden aspect-[3/4] mb-8 border border-white/10">
+                    <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1999&auto=format&fit=crop" 
+                         class="image-gritty w-full h-full object-cover" alt="Breathing">
+                    <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all"></div>
+                    <div class="absolute top-4 right-4 z-10">
+                        <span class="mono text-[10px] bg-black text-white border border-white/20 px-2 py-1 font-bold tracking-widest uppercase shadow-lg">Coming Soon</span>
+                    </div>
+                    <div class="absolute bottom-6 left-6">
+                        <span class="mono text-[10px] bg-yellow-400 text-black px-2 py-1 font-bold">OXYGEN_SIGNAL</span>
+                    </div>
+                </div>
+                <div class="flex flex-col flex-grow">
+                    <h3 class="text-3xl font-black uppercase mb-2">Signal</h3>
+                    <p class="serif italic text-xl text-yellow-400 mb-4">Breathing is tactical.</p>
+                    <p class="text-sm opacity-50 mb-8 leading-relaxed">Don't meditate. Recalibrate. Use high-stress CO2 tolerance techniques to keep your head while the world burns. Oxygen optimization for the high-pressure human.</p>
+                    
+                    <!-- Aligned CTA -->
+                    <div class="mt-auto">
+                        <button class="w-full border-b-2 border-yellow-400 pb-2 font-black text-xs transition-colors uppercase tracking-[0.2em] text-left opacity-50 cursor-not-allowed">
+                            Connect Signal — 
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- App Mockup Showcase Section -->
+    <section class="py-20 px-6 max-w-7xl mx-auto border-t border-white/10">
+        <div class="text-center mb-10">
+            <span class="mono text-xs text-yellow-400 font-bold uppercase tracking-[0.4em] block mb-4">Protocol Interface</span>
+            <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tighter">Inside Planet Strength</h2>
+        </div>
+
+        <div class="mockup-grid">
+            <!-- Mockup 1: Home Screen -->
+            <div class="mockup-frame">
+                <div class="ps-header">
+                    <div class="ps-brand">PLANET STRENGTH</div>
+                    <div class="ps-welcome">WELCOME BACK, <strong>BEN</strong></div>
+                </div>
+                <div class="ps-content">
+                    <button class="ps-btn">START TODAY'S WORKOUT</button>
+                    
+                    <div style="display: flex; gap: 8px;">
+                        <div class="ps-card-mock" style="flex: 1;">
+                            <div class="mockup-text-xs">Last Session</div>
+                            <div class="mockup-font-bold">Push Day</div>
+                        </div>
+                        <div class="ps-card-mock" style="flex: 1;">
+                            <div class="mockup-text-xs">Templates</div>
+                            <div class="mockup-font-bold">Browse Library</div>
+                        </div>
+                    </div>
+
+                    <div class="ps-quote">
+                        <div class="ps-quote-text">"It is a shame for a man to grow old without seeing the beauty and strength of which his body is capable."</div>
+                        <div class="mockup-text-xs" style="margin-top: 8px;">— SOCRATES</div>
+                    </div>
+                </div>
+                <div class="ps-tabbar">
+                    <div class="ps-tab active"></div>
+                    <div class="ps-tab"></div>
+                    <div class="ps-tab"></div>
+                </div>
+            </div>
+
+            <!-- Mockup 2: Active Workout -->
+            <div class="mockup-frame md:translate-y-12">
+                <div class="ps-header">
+                    <div class="mockup-text-xs" style="color: var(--brand-yellow);">ACTIVE SESSION</div>
+                    <div class="ps-title">UPPER BODY</div>
+                </div>
+                <div class="ps-content">
+                    <div class="ps-card-mock ps-card-active">
+                        <div class="mockup-text-xs" style="margin-bottom: 8px;">IN PROGRESS</div>
+                        
+                        <div class="ps-row chest">
+                            <div>
+                                <div class="mockup-font-bold">Bench Press</div>
+                                <div class="mockup-text-xs">3 SETS LOGGED</div>
+                            </div>
+                            <div style="color: var(--brand-yellow); font-weight: 700; font-size: 12px;">225 LBS</div>
+                        </div>
+                        
+                        <div class="ps-row arms">
+                            <div>
+                                <div class="mockup-font-bold">Tricep Extensions</div>
+                                <div class="mockup-text-xs">ON DECK</div>
+                            </div>
+                        </div>
+                        
+                         <div class="ps-row">
+                            <div>
+                                <div class="mockup-font-bold">Lateral Raises</div>
+                                <div class="mockup-text-xs">PENDING</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: auto; padding-bottom: 40px;">
+                         <button class="ps-btn" style="background: var(--off-black); color: #ffffff; border: 1px solid var(--border-bright);">FINISH WORKOUT</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mockup 3: Analytics / Muscle Map -->
+            <div class="mockup-frame">
+                <div class="ps-header">
+                    <div class="ps-brand">INSIGHTS</div>
+                    <div class="ps-title">MUSCLE MAP</div>
+                </div>
+                <div class="ps-content" style="align-items: center;">
+                    
+                    <div style="display: flex; gap: 4px; width: 100%; margin-bottom: 16px;">
+                         <div style="flex: 1; padding: 6px; text-align: center; background: rgba(250,204,21,0.1); color: var(--brand-yellow); border: 1px solid var(--brand-yellow); border-radius: 4px; font-size: 10px;">7 DAYS</div>
+                         <div style="flex: 1; padding: 6px; text-align: center; background: var(--off-black); border: 1px solid var(--border); border-radius: 4px; font-size: 10px; color: var(--muted);">30 DAYS</div>
+                    </div>
+
+                    <!-- Abstract CSS Pie Chart Representation -->
+                    <div style="width: 160px; height: 160px; border-radius: 50%; background: conic-gradient(rgba(239, 68, 68, 0.8) 0% 30%, rgba(59, 130, 246, 0.8) 30% 55%, rgba(34, 197, 94, 0.8) 55% 85%, rgba(250, 204, 21, 0.8) 85% 100%); position: relative; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(0,0,0,0.5);">
+                         <div style="width: 100px; height: 100px; background: var(--card); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                             <div class="mockup-font-bold">42</div>
+                             <div class="mockup-text-xs">SETS TOTAL</div>
+                         </div>
+                    </div>
+
+                    <div style="width: 100%; margin-top: 24px; display: flex; flex-direction: column; gap: 8px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: rgba(239, 68, 68, 0.8);"></div>
+                            <div class="mockup-font-bold">CHEST</div>
+                            <div class="mockup-text-xs" style="margin-left: auto;">30%</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: rgba(59, 130, 246, 0.8);"></div>
+                            <div class="mockup-font-bold">BACK</div>
+                            <div class="mockup-text-xs" style="margin-left: auto;">25%</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: rgba(34, 197, 94, 0.8);"></div>
+                            <div class="mockup-font-bold">LEGS</div>
+                            <div class="mockup-text-xs" style="margin-left: auto;">30%</div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="ps-tabbar">
+                    <div class="ps-tab"></div>
+                    <div class="ps-tab"></div>
+                    <div class="ps-tab active"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content / Games Teaser -->
+    <section class="py-32 bg-yellow-400 text-black overflow-hidden relative">
+        <div class="absolute top-0 right-0 opacity-10 rotate-12 select-none">
+            <span class="text-[20rem] font-black leading-none">NOBODY</span>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
+                <div>
+                    <h2 class="text-7xl md:text-8xl font-black uppercase leading-[0.85] mb-8 tracking-tighter">WE ALSO MAKE<br>BAD DECISIONS.</h2>
+                    <p class="text-2xl font-bold mb-8 leading-tight">Games. Films. Content. Everything designed to distract you from the crushing reality of being Nobody.</p>
+                    <div class="flex gap-4">
+                        <span class="bg-black text-white px-4 py-2 font-black uppercase text-[10px] tracking-widest">Coming Soon</span>
+                        <span class="bg-black text-white px-4 py-2 font-black uppercase text-[10px] tracking-widest">Project: Zero</span>
+                    </div>
+                </div>
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop" 
+                         class="w-full grayscale border-4 md:border-[12px] border-black shadow-[20px_20px_0px_#000]" alt="Games">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Manifesto Section -->
+    <section id="manifesto" class="py-40 px-6 max-w-4xl mx-auto text-center border-b border-white/10">
+        <span class="mono text-xs text-yellow-400 font-bold uppercase tracking-[0.4em] mb-12 block">The Manifesto</span>
+        <h2 class="serif text-4xl md:text-7xl italic leading-tight mb-16">
+            "The world is full of experts telling you how to live. Listen to <span class="not-italic font-black uppercase underline decoration-yellow-400">Nobody</span>."
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 text-left mono text-[10px] md:text-xs opacity-40 uppercase leading-loose">
+            <div class="space-y-4">
+                <p>01. We do not participate in streaks. Streaks are for the fragile. Consistency is for the resilient.</p>
+                <p>02. We do not share our progress. Progress is a private conversation between you and the weights.</p>
+                <p>03. We do not use "AI Coaches." Nobody knows your body better than you. Pay attention.</p>
+            </div>
+            <div class="space-y-4">
+                <p>04. Self-care is a marketing term. Maintenance is a biological requirement. Do the work.</p>
+                <p>05. If you are looking for a community to validate your existence, you have found the wrong place.</p>
+                <p>06. Trust Nobody. Especially yourself at 5 AM.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-20 px-6 bg-black">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-12">
+                <div>
+                    <div class="text-4xl font-black uppercase tracking-tighter mb-6">NOBODY<span class="text-yellow-400">.</span></div>
+                    <div class="mono text-[10px] opacity-40 max-w-xs leading-relaxed">
+                        OWNED AND OPERATED BY NOBODY STUDIOS.<br>
+                        BUILT IN THE SHADOWS. SAN ANTONIO, TX.<br>
+                        LOG_ID: 9942-X-NOBODY
+                    </div>
+                </div>
+                <div class="flex flex-col gap-3 mono text-[10px] uppercase font-black text-left md:text-right">
+                    <a href="https://instagram.com/_nobodystudios" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-400 transition-colors">Instagram: @_nobodystudios</a>
+                    <a href="https://instagram.com/bensoup" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-400 transition-colors">Creator: @bensoup</a>
+                    <a href="mailto:hirebencampbell@gmail.com" class="hover:text-yellow-400 transition-colors">Comms: hirebencampbell@gmail.com</a>
+                    <button onclick="document.getElementById('termsModal').classList.remove('hidden')" class="hover:text-yellow-400 transition-colors text-left md:text-right uppercase">Death Warrant (Terms)</button>
+                </div>
+            </div>
+            <div class="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 mono text-[10px] opacity-30">
+                <span>© 2024 NOBODY STUDIOS. NO RIGHTS RESERVED.</span>
+                <span class="uppercase">Built by Nobody. For the resilient.</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Terms Modal -->
+    <div id="termsModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/90 backdrop-blur-sm p-6">
+        <div class="bg-[#111] border border-[#333] p-8 max-w-lg w-full relative">
+            <button onclick="document.getElementById('termsModal').classList.add('hidden')" class="absolute top-4 right-4 text-gray-500 hover:text-yellow-400">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <span class="mono text-xs text-yellow-400 font-bold uppercase tracking-[0.4em] mb-4 block">Liability Release</span>
+            <h3 class="text-3xl font-black uppercase mb-6">The Death Warrant</h3>
+            <div class="space-y-4 mono text-[10px] md:text-xs opacity-70 leading-relaxed text-left">
+                <p>Listen up. The protocols, workouts, and suggestions provided by Nobody Studios and Planet Strength are exactly that—suggestions. We are not your doctors, your physical therapists, or your babysitters.</p>
+                <p>By using this site or our applications, you accept full responsibility for your own biological maintenance. If you drop a weight on your device, that's on you. If you push too hard and tear a muscle, that's on you. We assume absolutely zero liability for any physical injury, property damage, or bruised egos.</p>
+                <p>Consult a medical professional before starting any fitness program if you aren't absolutely sure what you're doing. You assume all risks associated with the use of our tools.</p>
+                <p class="text-yellow-400 font-bold mt-6 opacity-100">Trust Nobody, but take responsibility for yourself.</p>
+            </div>
+            <button onclick="document.getElementById('termsModal').classList.add('hidden')" class="mt-8 w-full bg-yellow-400 text-black font-black uppercase py-3 text-sm hover:bg-yellow-300 transition-colors">I Accept The Risks</button>
+        </div>
+    </div>
+
+</body>
+</html>

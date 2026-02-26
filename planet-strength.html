@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Planet Strength | Strength Protocol • Open Beta</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,700&family=Inter:wght@400;900&family=Space+Mono&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-yellow: #facc15;
+      --brand-black: #0a0a0a;
+      --off-black: #111111;
+      --card: #161616;
+      --border: #2a2a2a;
+      --border-bright: #3a3a3a;
+      --muted: #777770;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+      --font-serif: 'Cormorant Garamond', serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--brand-black);
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .serif { font-family: var(--font-serif); }
+    .mono { font-family: var(--font-mono); }
+
+    .bg-grain {
+      background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+      background-attachment: fixed;
+    }
+
+    .nav-blur {
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .btn-bold {
+      background: var(--brand-yellow);
+      color: black;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      transition: all 0.2s ease;
+    }
+    .btn-bold:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(250, 204, 21, 0.3);
+    }
+    .btn-bold:active { transform: scale(0.96); }
+
+    .pill {
+      border-radius: 999px;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      background: rgba(0,0,0,0.4);
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+    }
+
+    /* Image: BW → Color on hover */
+    .image-gritty {
+      filter: grayscale(100%) contrast(120%) brightness(80%);
+      transition: all 0.5s ease;
+      transform: scale(1);
+    }
+    .image-hover-wrapper:hover .image-gritty {
+      filter: grayscale(0%) contrast(110%) brightness(95%);
+      transform: scale(1.05);
+    }
+
+    /* Device mockup frame */
+    .mockup-frame {
+      width: 320px;
+      max-width: 100%;
+      height: 650px;
+      border: 12px solid #1a1a1a;
+      border-radius: 40px;
+      background: var(--brand-black);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px #333;
+      transform: translateY(0);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      flex-shrink: 0;
+      text-align: left;
+    }
+    .mockup-frame:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 35px 60px -15px rgba(250, 204, 21, 0.12), 0 0 0 1px #444;
+    }
+    .mockup-frame::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 24px;
+      background: #1a1a1a;
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
+      z-index: 50;
+    }
+
+    .ps-header {
+      background: var(--off-black);
+      border-bottom: 1px solid var(--border);
+      padding: 32px 16px 16px;
+    }
+    .ps-brand {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      color: var(--brand-yellow);
+    }
+    .ps-title {
+      font-family: var(--font-display);
+      font-size: 26px;
+      letter-spacing: 0.04em;
+      margin-top: 4px;
+      line-height: 1;
+    }
+    .ps-welcome {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .ps-content {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-family: var(--font-mono);
+    }
+    .ps-btn {
+      background: var(--brand-yellow);
+      color: var(--brand-black);
+      font-family: var(--font-display);
+      font-size: 18px;
+      padding: 14px;
+      border-radius: 12px;
+      text-align: center;
+      width: 100%;
+      letter-spacing: 0.08em;
+      box-shadow: 0 6px 20px rgba(250,204,21,0.15);
+      border: none;
+      cursor: pointer;
+    }
+    .ps-card-mock {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .ps-tabbar {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 60px;
+      background: var(--off-black);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding-bottom: 8px;
+    }
+    .ps-tab {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--border);
+    }
+    .ps-tab.active { background: var(--brand-yellow); }
+
+    .mockup-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 40px;
+    }
+
+    /* Simple fade-in */
+    .fade-in { animation: fadeIn 0.7s ease-out both; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="bg-grain">
+
+  <!-- Nav -->
+  <nav class="fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center nav-blur">
+    <div class="text-2xl font-black tracking-tighter uppercase cursor-default">
+      _Nobody Studios<span class="text-yellow-400">.</span>
+    </div>
+    <div class="flex gap-6 font-bold text-[10px] md:text-xs uppercase tracking-[0.2em]">
+      <a href="index.html" class="hover:text-yellow-400 transition-colors">Wellness Protocols</a>
+      <a href="#beta-notes" class="hover:text-yellow-400 transition-colors">Beta Notes</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="min-h-screen flex items-center pt-24 pb-16 px-6">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center fade-in">
+      <!-- Left: Copy -->
+      <div class="space-y-8">
+        <div class="inline-flex items-center gap-3 pill px-4 py-2 mono text-[10px] uppercase tracking-[0.25em] text-yellow-400">
+          <span class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
+          <span>Strength_Protocol • Open Beta</span>
+        </div>
+
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-tight">
+          Biological Maintenance:<br class="hidden md:block">
+          <span class="text-yellow-400">Planet Strength</span>
+        </h1>
+
+        <p class="serif text-xl md:text-2xl italic text-yellow-400">
+          "We don't do <span class="not-italic font-black uppercase">wellness</span>. We do survival. Stop decaying and start tracking."
+        </p>
+
+        <p class="text-sm md:text-base opacity-70 max-w-xl">
+          Planet Strength is a quiet logbook for people who are done negotiating with gravity.
+          No feed. No streak fireworks. Just every rep, every set, every mile recorded so you can’t lie to yourself later.
+        </p>
+
+        <div class="space-y-4">
+          <div class="flex flex-wrap gap-3 text-[10px] uppercase mono opacity-80">
+            <span class="pill px-3 py-1">Mobile Browser App</span>
+            <span class="pill px-3 py-1">Install to Home Screen</span>
+            <span class="pill px-3 py-1">Strength + Cardio</span>
+            <span class="pill px-3 py-1">Muscle Map • History • Streaks</span>
+          </div>
+
+          <!-- Launch CTA -->
+          <div class="flex flex-col sm:flex-row gap-3 sm:items-center">
+            <!-- LIVE APP URL HERE -->
+            <a href="https://beta--pstester.netlify.app/" target="_blank" rel="noopener noreferrer"
+              class="btn-bold inline-flex items-center justify-center px-10 py-4 text-xs md:text-sm rounded-full">
+              Launch Strength Protocol
+            </a>
+            <a href="index.html" class="mono text-[10px] uppercase tracking-[0.25em] opacity-60 hover:opacity-100 transition">
+              ← Back to Wellness Hub
+            </a>
+          </div>
+
+          <p class="mono text-[10px] opacity-50 max-w-md leading-relaxed">
+            Open on your phone for the real experience. Tap <strong>Launch Strength Protocol</strong>, then add it to your home screen from your browser menu. 
+            It lives on your device, not in a feed.
+          </p>
+        </div>
+      </div>
+
+      <!-- Right: Workout Image (BW → Color on hover) -->
+      <div class="image-hover-wrapper max-w-md mx-auto lg:mx-0">
+        <div class="border border-white/10 overflow-hidden relative">
+          <img
+            src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200&auto=format&fit=crop"
+            alt="Gritty strength training"
+            class="image-gritty w-full h-full object-cover"
+          >
+          <div class="absolute top-4 left-4 bg-black/70 px-3 py-1 mono text-[10px] uppercase tracking-[0.25em]">
+            Protocol: STRENGTH_MODULE
+          </div>
+          <div class="absolute bottom-4 right-4 bg-yellow-400 text-black px-3 py-1 mono text-[10px] uppercase tracking-[0.25em]">
+            Status: Now In Beta
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- App Screens -->
+  <section class="py-20 px-6 max-w-7xl mx-auto border-t border-white/10">
+    <div class="text-center mb-10">
+      <span class="mono text-xs text-yellow-400 font-bold uppercase tracking-[0.4em] block mb-4">Protocol Interface</span>
+      <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tighter">Inside Planet Strength</h2>
+      <p class="mono text-[11px] opacity-60 mt-4 max-w-xl mx-auto">
+        These screens mirror the live beta: the home node, an active session, and your recent damage mapped across muscle groups.
+      </p>
+    </div>
+
+    <div class="mockup-grid">
+      <!-- Mockup 1: Home -->
+      <div class="mockup-frame">
+        <div class="ps-header">
+          <div class="ps-brand">PLANET STRENGTH</div>
+          <div class="ps-welcome">WELCOME BACK, <strong>BEN</strong></div>
+        </div>
+        <div class="ps-content">
+          <button class="ps-btn">START TODAY'S WORKOUT</button>
+          <div style="display: flex; gap: 8px;">
+            <div class="ps-card-mock" style="flex: 1;">
+              <div class="mono text-[9px] text-yellow-400 uppercase tracking-[0.18em] mb-1">Last Session</div>
+              <div class="mono text-[12px] font-bold">Push Day</div>
+              <div class="mono text-[10px] opacity-60 mt-1">Bench • OHP • Triceps</div>
+            </div>
+            <div class="ps-card-mock" style="flex: 1;">
+              <div class="mono text-[9px] text-yellow-400 uppercase tracking-[0.18em] mb-1">Templates</div>
+              <div class="mono text-[12px] font-bold">Browse Library</div>
+              <div class="mono text-[10px] opacity-60 mt-1">Full Body • Push/Pull</div>
+            </div>
+          </div>
+          <div class="ps-card-mock">
+            <div class="mono text-[9px] text-yellow-400 uppercase tracking-[0.18em] mb-2">Quote of the Block</div>
+            <p class="serif text-[13px] italic leading-snug">
+              "It is a shame for a man to grow old without seeing the beauty and strength of which his body is capable."
+            </p>
+            <p class="mono text-[9px] opacity-60 mt-2">— Socrates</p>
+          </div>
+        </div>
+        <div class="ps-tabbar">
+          <div class="ps-tab active"></div>
+          <div class="ps-tab"></div>
+          <div class="ps-tab"></div>
+        </div>
+      </div>
+
+      <!-- Mockup 2: Active Session -->
+      <div class="mockup-frame md:translate-y-12">
+        <div class="ps-header">
+          <div class="mono text-[9px]" style="color: var(--brand-yellow); letter-spacing: 0.18em; text-transform: uppercase;">Active Session</div>
+          <div class="ps-title">Upper Body</div>
+        </div>
+        <div class="ps-content">
+          <div class="ps-card-mock">
+            <div class="mono text-[9px] text-yellow-400 uppercase tracking-[0.18em] mb-2">In Progress</div>
+            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--off-black); border-radius:6px; border-left:3px solid rgba(239, 68, 68, 0.6); padding:10px; margin-bottom:8px;">
+              <div>
+                <div class="mono text-[12px] font-bold">Bench Press</div>
+                <div class="mono text-[10px] opacity-60">3 sets logged</div>
+              </div>
+              <div class="mono text-[11px]" style="color: var(--brand-yellow); font-weight:700;">225 lbs</div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--off-black); border-radius:6px; border-left:3px solid rgba(168, 85, 247, 0.6); padding:10px; margin-bottom:8px;">
+              <div>
+                <div class="mono text-[12px] font-bold">Tricep Extensions</div>
+                <div class="mono text-[10px] opacity-60">On deck</div>
+              </div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--off-black); border-radius:6px; border:1px solid var(--border); padding:10px;">
+              <div>
+                <div class="mono text-[12px] font-bold">Lateral Raises</div>
+                <div class="mono text-[10px] opacity-60">Pending</div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:auto; padding-bottom:40px;">
+            <button class="ps-btn" style="background: var(--off-black); color:#ffffff; border:1px solid var(--border-bright);">
+              Finish Workout
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mockup 3: Muscle Map -->
+      <div class="mockup-frame">
+        <div class="ps-header">
+          <div class="ps-brand">INSIGHTS</div>
+          <div class="ps-title">Muscle Map</div>
+        </div>
+        <div class="ps-content" style="align-items:center;">
+          <div style="display:flex; gap:4px; width:100%; margin-bottom:16px;">
+            <div style="flex:1; padding:6px; text-align:center; background:rgba(250,204,21,0.1); color:var(--brand-yellow); border:1px solid var(--brand-yellow); border-radius:4px; font-size:10px;">
+              7 Days
+            </div>
+            <div style="flex:1; padding:6px; text-align:center; background:var(--off-black); border:1px solid var(--border); border-radius:4px; font-size:10px; color:var(--muted);">
+              30 Days
+            </div>
+          </div>
+          <div style="width:160px; height:160px; border-radius:50%; background: conic-gradient(rgba(239,68,68,0.8) 0% 30%, rgba(59,130,246,0.8) 30% 55%, rgba(34,197,94,0.8) 55% 85%, rgba(250,204,21,0.8) 85% 100%); position:relative; display:flex; align-items:center; justify-content:center; box-shadow:0 0 20px rgba(0,0,0,0.5);">
+            <div style="width:100px; height:100px; background:var(--card); border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+              <div class="mono text-[14px] font-bold">42</div>
+              <div class="mono text-[9px] opacity-70">Sets Total</div>
+            </div>
+          </div>
+          <div style="width:100%; margin-top:24px; display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div style="width:12px; height:12px; border-radius:50%; background:rgba(239,68,68,0.8);"></div>
+              <div class="mono text-[11px] font-bold">Chest</div>
+              <div class="mono text-[10px] opacity-70" style="margin-left:auto;">30%</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div style="width:12px; height:12px; border-radius:50%; background:rgba(59,130,246,0.8);"></div>
+              <div class="mono text-[11px] font-bold">Back</div>
+              <div class="mono text-[10px] opacity-70" style="margin-left:auto;">25%</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div style="width:12px; height:12px; border-radius:50%; background:rgba(34,197,94,0.8);"></div>
+              <div class="mono text-[11px] font-bold">Legs</div>
+              <div class="mono text-[10px] opacity-70" style="margin-left:auto;">30%</div>
+            </div>
+          </div>
+        </div>
+        <div class="ps-tabbar">
+          <div class="ps-tab"></div>
+          <div class="ps-tab"></div>
+          <div class="ps-tab active"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Beta Notes -->
+  <section id="beta-notes" class="py-20 px-6 border-t border-white/10">
+    <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div class="space-y-6">
+        <span class="mono text-xs text-yellow-400 font-bold uppercase tracking-[0.3em]">Phase_01: Maintenance</span>
+        <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tight">Planet Strength • v0.9</h2>
+        <p class="text-sm opacity-70 leading-relaxed">
+          This is a live protocol test, not a polished product. The question is simple:
+          if you strip away the noise and keep the logbook, is it easier to keep moving?
+        </p>
+        <ul class="mono text-[11px] space-y-2 opacity-80">
+          <li>• Log strength sessions with sets, weight, reps, and notes</li>
+          <li>• Track running and swimming with effort tags and details</li>
+          <li>• See streaks, basic analytics, and a muscle coverage map</li>
+          <li>• Data stored locally on your device (no accounts yet)</li>
+          <li>• Mobile-first layout, PWA-ready for home screen install</li>
+        </ul>
+      </div>
+      <div class="space-y-6">
+        <span class="mono text-xs text-yellow-400 font-bold uppercase tracking-[0.3em]">Accept The Risks</span>
+        <div class="card p-6 space-y-4 mono text-[11px] opacity-80 leading-relaxed">
+          <p>01. <strong class="text-yellow-400">No cloud sync.</strong><br>All logs live where you train: your device. Clear site data, lose the log. Biological maintenance is still your responsibility.</p>
+          <p>02. <strong class="text-yellow-400">Bugs exist.</strong><br>This is an open beta. Layout quirks, edge cases, and weird behavior are expected. If something feels wrong, it probably is.</p>
+          <p>03. <strong class="text-yellow-400">Mobile-first.</strong><br>Desktop works, but the protocol was built to live in your pocket, not on your monitor.</p>
+          <p>04. <strong class="text-yellow-400">Feedback is data.</strong><br>If you run Planet Strength for a week, your complaints and wins are part of how the protocol evolves.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-16 px-6 bg-black border-t border-white/10">
+    <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between gap-8 items-start md:items-center">
+      <div>
+        <div class="text-3xl font-black uppercase tracking-tighter mb-2">
+          NOBODY<span class="text-yellow-400">.</span>
+        </div>
+        <div class="mono text-[10px] opacity-40 leading-relaxed">
+          Planet Strength is one of the Nobody Studios Wellness Protocols.<br>
+          Biological tools built for the resilient. San Antonio, TX.
+        </div>
+      </div>
+      <div class="flex flex-col items-start md:items-end gap-2 mono text-[10px] uppercase">
+        <a href="index.html" class="hover:text-yellow-400 transition-colors">← Back to Wellness Hub</a>
+        <a href="mailto:hirebencampbell@gmail.com" class="hover:text-yellow-400 transition-colors">Report a Bug / Send Praise</a>
+        <span class="opacity-40">© 2024 Nobody Studios. No rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
