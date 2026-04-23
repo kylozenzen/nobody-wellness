@@ -4,6 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NOBODY CREATIVE | BUILT BY NOBODY</title>
+    <meta name="description" content="Wellness Protocols by Nobody Creative — brutalist wellness apps for strength, fuel, and recovery. Explore Planet Strength and upcoming biological tools built for the resilient.">
+    <meta name="keywords" content="Nobody Creative, wellness apps, Planet Strength, fitness tracker, strength tracker, habit tracker, biological maintenance">
+    <meta name="author" content="Nobody Creative">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Nobody Creative Wellness Protocols">
+    <meta property="og:description" content="Brutalist wellness apps built for the resilient. Explore Planet Strength and the Nobody Creative wellness hub.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1534367507873-d2d7e24c797f?q=80&w=1200&auto=format&fit=crop">
+    <meta property="og:image:alt" content="Moody wellness and training themed background for Nobody Creative Wellness Protocols">
+    <meta property="og:site_name" content="Nobody Creative">
+    <meta property="og:url" content="https://your-domain.com/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nobody Creative Wellness Protocols">
+    <meta name="twitter:description" content="Brutalist wellness apps built for the resilient. Explore Planet Strength and upcoming protocols.">
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1534367507873-d2d7e24c797f?q=80&w=1200&auto=format&fit=crop">
+    <link rel="canonical" href="https://your-domain.com/">
+
+    <!-- Google tag (gtag.js) -->
+    <!-- Replace G-XXXXXXXXXX with your real Google Analytics Measurement ID -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -152,13 +177,45 @@
 
         .mockup-text-xs { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
         .mockup-font-bold { font-weight: 700; color: #ffffff; font-size: 12px; }
+
+        .brand-enhanced {
+            color: #fff8d6;
+            text-shadow: 0 0 18px rgba(250, 204, 21, 0.2), 0 2px 18px rgba(0,0,0,0.75);
+        }
+
+        .nav-brand {
+            color: #fffdf3;
+            text-shadow: 0 2px 12px rgba(0,0,0,0.55), 0 0 16px rgba(250, 204, 21, 0.08);
+        }
+
+        .hero-vignette {
+            background:
+                radial-gradient(circle at top center, rgba(250, 204, 21, 0.14), transparent 35%),
+                linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.6));
+        }
+
+        .hero-brand-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.65rem;
+            padding: 0.65rem 1rem;
+            border: 1px solid rgba(250, 204, 21, 0.35);
+            background: rgba(10, 10, 10, 0.62);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+        }
+
+        .hero-brand-chip strong {
+            color: #fde047;
+        }
+
     </style>
 </head>
 <body class="bg-grain">
 
     <!-- Refined Navigation -->
     <nav class="fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center nav-blur">
-        <div class="text-2xl font-black tracking-tighter uppercase cursor-default">
+        <div class="text-2xl font-black tracking-tighter uppercase cursor-default nav-brand">
             _Nobody Creative<span class="text-yellow-400">.</span>
         </div>
         <div class="flex gap-6 font-bold text-[10px] md:text-xs uppercase tracking-[0.2em]">
@@ -169,16 +226,20 @@
 
     <!-- Hero Section -->
     <section class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-20">
-        <div class="absolute inset-0 z-0">
+        <div class="absolute inset-0 z-0 hero-vignette">
             <img src="https://images.unsplash.com/photo-1534367507873-d2d7e24c797f?q=80&w=2070&auto=format&fit=crop" 
-                 class="w-full h-full object-cover opacity-30 grayscale" alt="Gritty background">
+                 class="w-full h-full object-cover opacity-40 grayscale" alt="Gritty background">
         </div>
         
         <div class="relative z-10 text-center px-4 mt-auto mb-auto">
-            <h1 class="text-7xl md:text-[12rem] font-black uppercase leading-[0.85] tracking-tighter mb-6">
+            <div class="hero-brand-chip mono text-[10px] md:text-xs uppercase tracking-[0.32em] mb-6 brand-enhanced">
+                <span class="inline-block w-2.5 h-2.5 rounded-full bg-yellow-400"></span>
+                <span>A <strong>Nobody Creative</strong> wellness system</span>
+            </div>
+            <h1 class="text-7xl md:text-[12rem] font-black uppercase leading-[0.85] tracking-tighter mb-6 brand-enhanced">
                 TRUST<br><span class="text-stroke">NOBODY.</span>
             </h1>
-            <p class="serif text-xl md:text-4xl italic text-yellow-400 max-w-3xl mx-auto mb-10">
+            <p class="serif text-xl md:text-4xl italic text-yellow-300 max-w-3xl mx-auto mb-10 brand-enhanced">
                 "Biological tools built for the resilient."
             </p>
             <div class="flex justify-center">
@@ -484,7 +545,7 @@
                 </div>
             </div>
             <div class="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 mono text-[10px] opacity-30">
-                <span>© 2024 NOBODY CREATIVE. NO RIGHTS RESERVED.</span>
+                <span>© 2026 NOBODY CREATIVE. NO RIGHTS RESERVED.</span>
                 <span class="uppercase">Built by Nobody. For the resilient.</span>
             </div>
         </div>
